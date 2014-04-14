@@ -1,0 +1,30 @@
+<?php
+
+if (!isset($gCms)) exit;
+
+if (! $this->CheckAccess())
+	{
+	return $this->DisplayErrorPage($id, $params, $returnid,$this->Lang('accessdenied'));
+	}
+
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+   Code for CM "deleteCampaign" admin action
+   
+   -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+   
+   Typically, this will display something from a template
+   or do some other task.
+   
+*/
+echo 'delete campaign';
+$this->smarty->assign('delete_campaign_title', $this->Lang('title_delete_campaign'));
+
+
+
+
+
+
+echo $this->ProcessTemplate('deleteCampaign.tpl');
+
+?>
