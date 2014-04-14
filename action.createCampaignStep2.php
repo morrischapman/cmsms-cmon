@@ -27,11 +27,22 @@ else
 	}
 	
 	$url = $_SESSION['CMon']['wizards'][$params['wizard_id']]['url'];
-	$title = CMonBase::getHtmlPageTitle($url);
+
+    if($this->GetPreference('use_global_campaign_name', false))
+    {
+        $title = $this->GetPreference('campaign_name');
+        $subject = $this->GetPreference('subject');
+    }
+    else
+    {
+        $title = CMonBase::getHtmlPageTitle($url);
+        $subject = $title;
+    }
+
 
 	// Preparation
 	$campaign_name =  isset($_SESSION['CMon']['wizards'][$params['wizard_id']]['campaign_name'])?$_SESSION['CMon']['wizards'][$params['wizard_id']]['campaign_name']:$title;
-	$subject = isset($_SESSION['CMon']['wizards'][$params['wizard_id']]['subject'])?$_SESSION['CMon']['wizards'][$params['wizard_id']]['subject']:$title;	
+	$subject = isset($_SESSION['CMon']['wizards'][$params['wizard_id']]['subject'])?$_SESSION['CMon']['wizards'][$params['wizard_id']]['subject']:$subject;
 	
 	$form = new CMSForm('CMon', $id, 'createCampaignStep2', $returnid);
 	$form->setLabel('submit', $this->lang('continue'));

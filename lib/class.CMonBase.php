@@ -10,40 +10,86 @@
 	
 	*/
 
+/**
+ * Class CMonBase
+ */
+// TODO: Refactor and link with CMClient
 class CMonBase 
 {
+    private static $instance;
+
+    /** @var \CampaignMonitor */
 	var $cm;
-	var $api_key;
-	var $client_id;
+	private $api_key;
+	private $client_id;
 	
 	public function __construct()
 	{
-		$this->cm = self::init();
-		$this->api_key = self::getApiKey();
-		$this->client_id = self::getClientId();
-	}
-	
-	public static function init()
-	{
-		global $CampaingMonitor;
-		if (!is_object($CampaingMonitor['object']))
-		{
-			$CampaingMonitor['object'] = new CampaignMonitor(self::getApiKey());
-		}
-		return $CampaingMonitor['object'];
-	}
-	
-	public static function getApiKey()
-	{
-		$cmon = cms_utils::get_module('CMon');
-		return $cmon->getPreference('api_key');
+//		$this->api_key = self::getApiKey();
+//		$this->client_id = self::getClientId();
 	}
 
-	public static function getClientId()
+    /**
+     * @return CampaignMonitor
+     * @deprecated
+     */
+    public static function init()
 	{
-		$cmon = cms_utils::get_module('CMon');
-		return $cmon->getPreference('client_id');
+        return self::getInstance()->getCM();
 	}
+
+    public static function getInstance()
+    {
+        return isset(static::$instance)
+            ? static::$instance
+            : static::$instance = new self
+            ;
+    }
+
+    /**
+     * @return CampaignMonitor
+     */
+    private function getCM()
+    {
+        return isset($this->cm)
+            ? $this->cm
+            : $this->cm = $this->loadCM()
+        ;
+    }
+
+    /**
+     * @return CampaignMonitor
+     */
+    private function loadCM()
+    {
+        return new CampaignMonitor($this->getApiKey());
+    }
+
+	public function getApiKey()
+	{
+        return isset($this->api_key)
+            ? $this->api_key
+            : $this->api_key = static::loadApiKey()
+        ;
+	}
+
+    private static function loadApiKey()
+    {
+        return cms_utils::get_module('CMon')->getPreference('api_key');
+    }
+
+	public function getClientId()
+	{
+        return isset($this->client_id)
+            ? $this->client_id
+            : $this->client_id = static::loadClientID()
+        ;
+	}
+
+    private static function loadClientID()
+    {
+        return cms_utils::get_module('CMon')->getPreference('client_id');
+    }
 	
 	public static function getListsTitle($list_ids)
 	{
@@ -76,8 +122,24 @@ class CMonBase
 			$reply_from = $from_email;
 		}
 
+        $instance = self::getInstance();
+
+        // TODO: Use this code
+//        $cm = CMClient::getInstance();
+//        $campaign = $cm->cs_campaigns(null)->create($cm->getClientId(), array(
+//                'Subject' => $subject,
+//                'Name' => $campaign_name,
+//                'FromName' => $from,
+//                'FromEmail' => $from_email,
+//                'ReplyTo' => $reply_from,
+//                'HtmlUrl' => $url,
+//                'TextUrl' => $plain_url,
+//                'ListIDs' => array($subscriber_list),
+////                'SegmentIDs' => array('First Segment', 'Second Segment')
+//            ));
+
 		$campaign = $cm->campaignCreate( 
-			self::getClientId(), 
+			$instance->getClientId(),
 			$campaign_name, 
 			$subject, 
 			$from,
@@ -107,8 +169,9 @@ class CMonBase
 	
 	public static function getSubscriberLists($extended = false)
 	{
+        $instance = self::getInstance();
 		$cm = self::init();
-		$results = $cm->clientGetLists(self::getClientId());
+		$results = $cm->clientGetLists($instance->getClientId());
 		$lists = array();
 		if (isset($results['anyType']))
 		{	
@@ -149,7 +212,8 @@ class CMonBase
 	public static function getCampaigns()
 	{
 		$cm = self::init();
-		$results = $cm->ClientGetCampaigns(self::getClientId());
+        $instance = self::getInstance();
+		$results = $cm->ClientGetCampaigns($instance->getClientId());
 		var_dump($results);
 	}
 	

@@ -118,6 +118,8 @@ $lang['form_send_immediately'] = 'Send immediately';
 $lang['form_default_time'] = 'Default sending time';
 $lang['form_scheduled_date'] = 'Scheduled date';
 $lang['form_scheduled_time'] = 'Scheduled time';
+$lang['form_use_global_campaign_name'] = 'Use global campaign name';
+
 
 $lang['changelog'] = '<ul>
 <li>Version 0.0.1 - 12 July 2010. Initial Release.</li>

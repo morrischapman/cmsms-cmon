@@ -33,11 +33,11 @@
 		</tr>
 	</thead>
 <tbody>
-{foreach from=$lists item=entry}
-	<tr class="{$entry->rowclass}" onmouseover="this.className='{$entry->rowclass}hover';" onmouseout="this.className='{$entry->rowclass}';">
-		<td>{$entry->title}</td>
-		<td>{$entry->id}</td>
-		<td>{$entry->total_subscribers}</td>
+{foreach from=$lists item=list}
+	<tr class="{$list->rowclass}" onmouseover="this.className='{$list->rowclass}hover';" onmouseout="this.className='{$list->rowclass}';">
+		<td>{$list->Name}</td>
+		<td>{$list->ListID}</td>
+		<td>{$list->stats->TotalActiveSubscribers}</td>
 	</tr>
 {/foreach}
 	</tbody></table>

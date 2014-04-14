@@ -29,13 +29,13 @@
 		</tr>
 	</thead>
 <tbody>
-{foreach from=$campaigns item=entry}
-	<tr class="{$entry->rowclass}" onmouseover="this.className='{$entry->rowclass}hover';" onmouseout="this.className='{$entry->rowclass}';">
-		<td>{$entry->name}</td>
-		<td>{$entry->campaign_id}</td>
-		<td>{$entry->date}</td>
-		<td>{$entry->total_recipients}</td>
-		<td>{*$entry->manageIcon*}</td>
+{foreach from=$campaigns item=campaign}
+	<tr class="{$campaign->rowclass}" onmouseover="this.className='{$campaign->rowclass}hover';" onmouseout="this.className='{$campaign->rowclass}';">
+		<td>{$campaign->Name}</td>
+		<td>{$campaign->CampaignID}</td>
+		<td>{$campaign->SentDate}</td>
+		<td>{$campaign->TotalRecipients}</td>
+		<td>{*$campaign->manageIcon*}</td>
 	</tr>
 {/foreach}
 	</tbody></table>

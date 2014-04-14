@@ -38,6 +38,8 @@
     # - Chat with developers on the #cms IRC channel
     #-------------------------------------------------------------------------
 
+    require_once(__DIR__ . DIRECTORY_SEPARATOR . 'lib' . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php');
+
     class CMon extends CMSModule
     {
         var $cm; // Campaign Monitor object
@@ -54,7 +56,7 @@
 
         function GetVersion()
         {
-            return '1.0.0';
+            return '1.0.2';
         }
 
         function GetHelp()
@@ -89,7 +91,7 @@
 
         function GetAdminSection()
         {
-            return 'content';
+            return 'extensions';
         }
 
         function GetAdminDescription()
@@ -171,6 +173,21 @@
             } elseif ($force) {
                 $this->cm = new CampaignMonitor($this->GetPreference('api_key'));
             }
+        }
+
+        function getCM()
+        {
+            return CMClient::getInstance();
+        }
+
+        public function hasApiKey()
+        {
+            return (bool) $this->GetPreference('api_key', false);
+        }
+
+        public function hasClientId()
+        {
+            return (bool) $this->GetPreference('client_id', false);
         }
 
         function addMail($addClient_id, $addCampaign_id, $addContents)
